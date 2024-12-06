@@ -3,36 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Crear Categoría</title>
+
+    <link rel="stylesheet" href="{{asset('css/estilos.css') }}">
 </head>
 <body>
-    <a href="{{route('categoria.index') }}">Volver a lista</a>
-
     <div class="container">
-        <h2>Crear Categoria</h2>
+        <a href="{{ route('categorias.index') }}" class="route">Volver a lista</a>
 
-        @if(session('success'))
-        <div class="alert alert-success">
-            {{session('success')}}
+        <h2>Crear Categoría</h2>
+
+       
+        <div class="alert-success">
+            {{ session('success') }}
         </div>
         @endif
 
-        <form action="{{route('categoria.store')}}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" required>
-            </div>
-
-            <div class="form-group">
-                <label for="descripcion">Descripción</label>
-                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
-            </div>
-            <div class ="container">
-                <form action="{{ route('categoria.store') }}" method="post">
-                    <button type="submit" class="btn btn-primary">Crear</button>
-                </form>
-
+       @if($errors->any())
+        <div class="alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
+        @endif
+
+        <form action="{{ route('categorias.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre') }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ old('descripcion') }}</textarea>
+            </div>
+
+            <button type="submit" class="button">Crear</button>
+        </form>
+    </div>
 </body>
 </html>
