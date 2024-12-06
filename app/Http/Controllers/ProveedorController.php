@@ -1,54 +1,56 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\proveedor;
+use App\Models\Proveedor;
+use App\Http\Controllers\Controller;
 
 class ProveedorController extends Controller
 {
-    public function index(){
-        $proveedores = proveedor::all();
-        return view('proveedor.index', compact('proveedores'));
+    public function index()
+    {
+        $proveedores = Proveedor::all();
+        return view('proveedores.index', compact('proveedores'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
-            'nombre' =>'required|string|max:255',
-            'direccion' =>'required|string|max:255',
-            'telefono' =>'required|numeric|max:20',
-            'email' =>'required|email|unique:proveedores,email',
-            'contacto' =>'required|string|max:255',
-            'descripcion' =>'required|string|max:255'
+            'nombre' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'required|regex:/^[0-9]{1,20}$/',
+            'email' => 'required|email|unique:proveedores,email',
+            'contacto' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255'
         ]);
-        proveedor::create($request->all());
+
+        Proveedor::create($request->all());
         return redirect()->route('proveedores.index')->with('success', 'Proveedor creado correctamente');
     }
 
-    public function edit(proveedor $proveedor){
-        return view('proveedor.edit', compact('proveedor'));
+    public function edit(Proveedor $proveedor)
+    {
+        return view('proveedores.edit', compact('proveedor'));
     }
 
-   
-    public function update(Request $request, proveedor $proveedor){
+    public function update(Request $request, Proveedor $proveedor)
+    {
         $request->validate([
-            'nombre' =>'required|string|max:255',
-            'direccion' =>'required|string|max:255',
-            'telefono' =>'required|numeric|max:20',
-            'email' =>'required|email|unique:proveedores,email',
-            'contacto' =>'required|string|max:255',
-            'descripcion' =>'required|string|max:255'
+            'nombre' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'required|regex:/^[0-9]{1,20}$/',
+            'email' => 'required|email|unique:proveedores,email,' . $proveedor->id,
+            'contacto' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255'
         ]);
-        $proveedor::create($request->all());
+
+        $proveedor->update($request->all());
         return redirect()->route('proveedores.index')->with('success', 'Proveedor actualizado correctamente');
     }
-    
 
-    public function destroy(proveedor $proveedor){
+    public function destroy(Proveedor $proveedor)
+    {
         $proveedor->delete();
         return redirect()->route('proveedores.index')->with('success', 'Proveedor eliminado correctamente');
     }
-
-    
-
 }
