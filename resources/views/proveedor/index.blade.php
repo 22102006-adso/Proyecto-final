@@ -67,10 +67,7 @@
                 @endforeach
             </tbody>
         </table>
-
-        <a href="{{ route('proveedores.create') }}" class="route">
-            <i class="fas fa-plus"></i> Ingresar un nuevo proveedor
-        </a>
+        <a href="{{ route('proveedores.create') }}" class="route"><i class="fas fa-plus"></i> Ingresar un nuevo proveedor</a>
     </div>
 </body>
 </html>
